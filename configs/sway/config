@@ -1,5 +1,7 @@
 # Mod key
 set $mod Mod4
+# Font
+include ~/.config/sway/appearance/font
 # Incluir configuraciones
 include ~/.config/sway/keys/*
 include ~/.config/sway/system/*
