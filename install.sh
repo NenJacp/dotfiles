@@ -67,6 +67,7 @@ install_packages_fedora() {
         swayidle \
         waybar \
         mako \
+        swww \
         fontconfig \
         fastfetch \
         google-noto-sans-fonts
@@ -150,6 +151,7 @@ install_packages_arch() {
         docker \
         btop \
         mako \
+        swww \
         waybar \
         sway \
         swaylock \
@@ -314,6 +316,15 @@ install_nvim_plugins() {
     fi
 }
 
+setup_lazyvim() {
+    echo "Setting up LazyVim starter..."
+    if [ ! -d "$HOME/.config/nvim" ]; then
+        git clone https://github.com/LazyVim/starter "$HOME/.config/nvim"
+        # Eliminar el .git del starter para que no interfiera con tu repo
+        rm -rf "$HOME/.config/nvim/.git"
+    fi
+}
+
 main() {
     echo ""
     echo "Select option:"
@@ -330,12 +341,14 @@ main() {
             install_packages
             ;;
         2)
+            setup_lazyvim
             copy_configs
             install_oh_my_zsh
             install_nvim_plugins
             ;;
         3)
             install_packages
+            setup_lazyvim
             copy_configs
             install_oh_my_zsh
             install_nvim_plugins
