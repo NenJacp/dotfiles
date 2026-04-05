@@ -59,7 +59,6 @@ install_packages_fedora() {
         waybar \
         mako
 
-    install_lazydocker_fedora
     install_lazygit_fedora
     setup_node_fedora
 }
@@ -222,11 +221,9 @@ link_configs() {
     mkdir -p "$HOME/.local/bin"
 
     configs=(
-        "btop"
         "mako"
         "fontconfig"
         "kitty"
-        "lazydocker"
         "lazygit"
         "nvim"
         "nvim.bak"
