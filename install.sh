@@ -1,8 +1,12 @@
-#!/bin/zsh
+#!/bin/bash
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [ -z "$ZSH_VERSION" ]; then
+    exec zsh "$0" "$@"
+fi
 
 echo "========================================="
 echo "  Dotfiles Installation Script"
