@@ -38,7 +38,10 @@ install_packages_fedora() {
 
     setup_copr_fedora
 
-    sudo dnf install -y --skip-broken \
+    echo "Removing sway if present (to replace with swayfx)..."
+    sudo dnf remove -y sway 2>/dev/null || true
+
+    sudo dnf install -y --skip-broken --allowerasing \
         zsh \
         neovim \
         btop \
@@ -56,14 +59,11 @@ install_packages_fedora() {
         dunst \
         libnotify \
         swayfx \
-        swayfx-bg \
         swaylock \
         swayidle \
         waybar \
         mako \
-        fontconfig \
-        fontprocessor-pkgconfig \
-        fontsRPM
+        fontconfig
 
     install_nerd_fonts
     install_lazygit_fedora
