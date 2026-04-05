@@ -41,38 +41,79 @@ install_packages_fedora() {
         git \
         curl \
         wget \
-        nodejs \
-        npm \
-        docker \
-        docker-compose \
+        neovim \
         btop \
-        mako \
-        waybar \
-        sway \
-        swaylock \
-        swayidle \
         rofi \
         kitty \
-        neovim \
-        lazydocker \
-        lazygit \
-        fonts-fontconfig \
-        wl-clipboard \
         grim \
         slurp \
+        wl-clipboard \
         pamixer \
         brightnessctl \
         gammastep \
-        mpd \
         playerctl \
         NetworkManager \
         NetworkManager-tui \
-        polkit-gnome \
         dunst \
         libnotify \
+        gdm \
+        sway \
+        swaylock \
+        swayidle \
+        waybar \
+        polkit-gnome \
         pulseaudio \
         pipewire \
-        pipewire-pulseaudio
+        pipewire-pulseaudio \
+        mako
+
+    install_lazydocker_fedora
+    install_lazygit_fedora
+    setup_node_fedora
+}
+
+install_lazydocker_fedora() {
+    echo "Installing lazydocker..."
+    LAZYDOCKER_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazydocker/releases/latest" | grep -oP '"tag_name": "v\K[0-9.]+')
+    curl -Lo /tmp/lazydocker "https://github.com/jesseduffield/lazydocker/releases/download/v${LAZYDOCKER_VERSION}/lazydocker_linux_amd64.tar.gz"
+    sudo tar -xzf /tmp/lazydocker -C /usr/local/bin lazydocker
+    rm /tmp/lazydocker
+}
+
+install_lazygit_fedora() {
+    echo "Installing lazygit..."
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -oP '"tag_name": "v\K[0-9.]+')
+    curl -Lo /tmp/lazygit "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_linux_amd64.tar.gz"
+    sudo tar -xzf /tmp/lazygit -C /usr/local/bin lazygit
+    rm /tmp/lazygit
+}
+
+setup_node_fedora() {
+    echo "Setting up Node.js LTS..."
+    if ! command -v node &> /dev/null || [[ "$(node -v)" != "v20"* && "$(node -v)" != "v22"* ]]; then
+        curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
+        sudo dnf install -y nodejs
+    fi
+}
+
+setup_docker_fedora() {
+    echo "Setting up Docker..."
+    sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+    sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo systemctl enable --now docker
+    sudo usermod -aG docker $USER
+}
+
+setup_docker() {
+    case "$OS" in
+        fedora)
+            setup_docker_fedora
+            ;;
+        *)
+            sudo systemctl enable --now docker 2>/dev/null || true
+            sudo usermod -aG docker $USER 2>/dev/null || true
+            ;;
+    esac
 }
 
 install_packages_arch() {
@@ -178,7 +219,6 @@ install_packages() {
             ;;
         debian)
             install_packages_debian
-            setup_node_lts
             ;;
         *)
             echo "Unsupported OS: $OS"
