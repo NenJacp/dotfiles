@@ -324,8 +324,9 @@ main() {
     echo "  3) Full installation (packages + configs)"
     echo "  4) Exit"
     echo ""
-    read -p "Enter choice [1-4]: " choice
-
+    echo -n "Enter choice [1-4]: "
+    read choice
+    
     case "$choice" in
         1)
             install_packages
