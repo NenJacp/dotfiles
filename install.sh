@@ -66,18 +66,18 @@ install_packages_fedora() {
 
 install_lazydocker_fedora() {
     echo "Installing lazydocker..."
-    LAZYDOCKER_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazydocker/releases/latest" | grep -oP '"tag_name": "v\K[0-9.]+')
-    curl -Lo /tmp/lazydocker "https://github.com/jesseduffield/lazydocker/releases/download/v${LAZYDOCKER_VERSION}/lazydocker_linux_amd64.tar.gz"
-    sudo tar -xzf /tmp/lazydocker -C /usr/local/bin lazydocker
-    rm /tmp/lazydocker
+    LAZYDOCKER_URL="https://github.com/jesseduffield/lazydocker/releases/latest/download/lazydocker_Linux_amd64.tar.gz"
+    curl -Lo /tmp/lazydocker.tar.gz "$LAZYDOCKER_URL"
+    sudo tar -xzf /tmp/lazydocker.tar.gz -C /usr/local/bin lazydocker
+    rm /tmp/lazydocker.tar.gz
 }
 
 install_lazygit_fedora() {
     echo "Installing lazygit..."
-    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -oP '"tag_name": "v\K[0-9.]+')
-    curl -Lo /tmp/lazygit "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_linux_amd64.tar.gz"
-    sudo tar -xzf /tmp/lazygit -C /usr/local/bin lazygit
-    rm /tmp/lazygit
+    LAZYGIT_URL="https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_Linux_amd64.tar.gz"
+    curl -Lo /tmp/lazygit.tar.gz "$LAZYGIT_URL"
+    sudo tar -xzf /tmp/lazygit.tar.gz -C /usr/local/bin lazygit
+    rm /tmp/lazygit.tar.gz
 }
 
 setup_node_fedora() {
