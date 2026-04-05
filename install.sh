@@ -1,18 +1,8 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-if [ -n "$ZSH_VERSION" ]; then
-    SCRIPT_INTERPRETER="zsh"
-else
-    SCRIPT_INTERPRETER="bash"
-fi
-
-if [ "$SCRIPT_INTERPRETER" = "bash" ]; then
-    exec zsh "$0" "$@"
-fi
 
 echo "========================================="
 echo "  Dotfiles Installation Script"
@@ -252,8 +242,8 @@ install_packages() {
     setup_docker
 }
 
-link_configs() {
-    echo "Linking config files..."
+copy_configs() {
+    echo "Copying config files..."
 
     mkdir -p "$HOME/.config"
     mkdir -p "$HOME/.local/bin"
@@ -337,13 +327,13 @@ main() {
             install_packages
             ;;
         2)
-            link_configs
+            copy_configs
             install_oh_my_zsh
             install_nvim_plugins
             ;;
         3)
             install_packages
-            link_configs
+            copy_configs
             install_oh_my_zsh
             install_nvim_plugins
             echo ""
