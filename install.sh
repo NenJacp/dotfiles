@@ -36,11 +36,8 @@ echo "Detected OS: $OS"
 install_packages_fedora() {
     echo "Installing packages for Fedora..."
 
-    sudo dnf install -y \
+    sudo dnf install -y --skip-broken \
         zsh \
-        git \
-        curl \
-        wget \
         neovim \
         btop \
         rofi \
@@ -56,15 +53,10 @@ install_packages_fedora() {
         NetworkManager-tui \
         dunst \
         libnotify \
-        gdm \
         sway \
         swaylock \
         swayidle \
         waybar \
-        polkit-gnome \
-        pulseaudio \
-        pipewire \
-        pipewire-pulseaudio \
         mako
 
     install_lazydocker_fedora
@@ -193,12 +185,6 @@ install_packages_debian() {
         pulseaudio \
         pipewire \
         pipewire-pulseaudio
-}
-
-setup_docker() {
-    echo "Setting up Docker..."
-    sudo systemctl enable --now docker 2>/dev/null || true
-    sudo usermod -aG docker $USER 2>/dev/null || true
 }
 
 setup_node_lts() {
