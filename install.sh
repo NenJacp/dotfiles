@@ -241,26 +241,26 @@ link_configs() {
 
     for config in "${configs[@]}"; do
         if [ -d "$SCRIPT_DIR/configs/$config" ]; then
-            echo "  Linking $config..."
+            echo "  Copying $config..."
             rm -rf "$HOME/.config/$config"
-            ln -sf "$SCRIPT_DIR/configs/$config" "$HOME/.config/$config"
+            cp -r "$SCRIPT_DIR/configs/$config" "$HOME/.config/$config"
         fi
     done
 
-    echo "Linking bin scripts..."
+    echo "Copying bin scripts..."
     for script in "$SCRIPT_DIR/bin"/*; do
         if [ -f "$script" ]; then
             name=$(basename "$script")
             rm -f "$HOME/.local/bin/$name"
-            ln -sf "$script" "$HOME/.local/bin/$name"
+            cp "$script" "$HOME/.local/bin/$name"
             chmod +x "$HOME/.local/bin/$name"
         fi
     done
 
-    echo "Linking .zshrc..."
+    echo "Copying .zshrc..."
     if [ -f "$SCRIPT_DIR/zsh/.zshrc" ]; then
         rm -f "$HOME/.zshrc"
-        ln -sf "$SCRIPT_DIR/zsh/.zshrc" "$HOME/.zshrc"
+        cp "$SCRIPT_DIR/zsh/.zshrc" "$HOME/.zshrc"
     fi
 }
 
@@ -284,7 +284,7 @@ main() {
     echo ""
     echo "Select option:"
     echo "  1) Install packages only"
-    echo "  2) Link configs only"
+    echo "  2) Copy configs only"
     echo "  3) Full installation (packages + configs)"
     echo "  4) Exit"
     echo ""
