@@ -59,6 +59,7 @@ install_packages_fedora() {
         fd-find \
         dotnet-sdk-9.0 \
         libicu \
+        libunwind \
         btop \
         rofi \
         kitty \
@@ -367,16 +368,19 @@ setup_dotnet_tools() {
     echo "Setting up .NET tools..."
     if command -v dotnet &> /dev/null; then
         mkdir -p "$HOME/.dotnet/tools"
+        
         # Limpiar caches de nuget profundamente
+        echo "Clearing NuGet caches..."
         dotnet nuget locals all --clear || true
         
-        # Si csharp-ls falla, intentamos desinstalarlo primero por si está corrupto
-        echo "Attempting a clean installation of csharp-ls..."
+        # Intentar una desinstalación limpia (nuclear)
+        echo "Removing existing csharp-ls if any..."
         dotnet tool uninstall -g csharp-ls 2>/dev/null || true
         
-        # Instalar usando la fuente oficial explícitamente para evitar errores de DotnetToolSettings.xml
+        # Instalar desde la fuente oficial explícitamente
+        echo "Installing csharp-ls via dotnet tool..."
         dotnet tool install -g csharp-ls --add-source https://api.nuget.org/v3/index.json || \
-            echo "Warning: Could not install csharp-ls via dotnet tool. You might need to install it manually."
+            echo "Warning: Could not install csharp-ls. You might need to run: dotnet tool install -g csharp-ls"
     fi
 }
 
