@@ -84,20 +84,9 @@ setup_copr_fedora() {
 }
 
 install_nerd_fonts() {
-    echo "Installing Nerd Fonts and Noto Sans..."
-    
-    if ! fc-list | grep -qi "jetbrains"; then
-        echo "  Installing JetBrains Mono Nerd Font..."
-        mkdir -p /tmp/nerd-fonts
-        curl -sL "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.0/JetBrainsMono.zip" -o /tmp/nerd-fonts/jetbrains.zip
-        sudo unzip -o /tmp/nerd-fonts/jetbrains.zip -d /usr/share/fonts
-        rm -rf /tmp/nerd-fonts
-    fi
-    
-    echo "  Installing Noto Sans fonts..."
+    echo "Installing Noto Sans fonts..."
     sudo dnf install -y google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-sans-cjk-kr-fonts 2>/dev/null || true
-    
-    echo "  Refreshing font cache..."
+    echo "Refreshing font cache..."
     sudo fc-cache -f
 }
 

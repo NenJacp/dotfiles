@@ -43,8 +43,7 @@ cd dotfiles
 - `grim` + `slurp` - Screenshots
 
 ### Fuentes
-- JetBrains Mono Nerd Font (terminal/sway)
-- Noto Sans (sistema)
+- Noto Sans (sistema y sway)
 
 ## Estructura
 
@@ -77,7 +76,7 @@ dotfiles/
 - Configuración modular en `~/.config/sway/keys/`, `appearance/`, etc.
 
 ### Kitty
-- Font: JetBrains Mono Nerd Font
+- Font: Noto Sans
 - Tema: Oxocarbon dark
 - Tamaño: 10pt
 
