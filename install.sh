@@ -60,15 +60,32 @@ install_packages_fedora() {
         swaylock \
         swayidle \
         waybar \
-        mako
+        mako \
+        fontconfig \
+        fontprocessor-pkgconfig \
+        fontsRPM
 
+    install_nerd_fonts
     install_lazygit_fedora
     setup_node_fedora
 }
 
 setup_copr_fedora() {
     echo "Setting up COPR repos..."
-    sudo dnf copr enable -y mochaa:swayfx
+    if ! sudo dnf copr list | grep -q "mochaa/swayfx"; then
+        sudo dnf copr enable -y mochaa/swayfx
+    fi
+}
+
+install_nerd_fonts() {
+    echo "Installing Nerd Fonts..."
+    if ! fc-list | grep -qi "jetbrains"; then
+        mkdir -p /tmp/nerd-fonts
+        curl -sL "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.0/JetBrainsMono.zip" -o /tmp/nerd-fonts/jetbrains.zip
+        sudo unzip -o /tmp/nerd-fonts/jetbrains.zip -d /usr/share/fonts
+        sudo fc-cache -f
+        rm -rf /tmp/nerd-fonts
+    fi
 }
 
 install_lazydocker_fedora() {
@@ -280,7 +297,6 @@ install_oh_my_zsh() {
     if [ ! -d "$HOME/.oh-my-zsh" ]; then
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     fi
-
     sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="af-magic"/' "$HOME/.zshrc"
 }
 
