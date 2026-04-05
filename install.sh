@@ -278,8 +278,16 @@ copy_configs() {
             else
                 echo "  Copying $config..."
             fi
-            rm -rf "$HOME/.config/$config"
-            cp -r "$SCRIPT_DIR/configs/$config" "$HOME/.config/$config"
+            
+            if [ "$config" = "nvim" ]; then
+                # Para nvim, no borramos la carpeta para no cargar el starter de LazyVim
+                # solo copiamos encima para mezclar
+                mkdir -p "$HOME/.config/nvim"
+                cp -r "$SCRIPT_DIR/configs/$config"/* "$HOME/.config/$config/"
+            else
+                rm -rf "$HOME/.config/$config"
+                cp -r "$SCRIPT_DIR/configs/$config" "$HOME/.config/$config"
+            fi
         fi
     done
 
@@ -314,9 +322,13 @@ install_oh_my_zsh() {
 }
 
 install_nvim_plugins() {
-    echo "Installing Neovim plugins..."
+    echo "Installing Neovim plugins via LazyVim..."
     if command -v nvim &> /dev/null; then
-        nvim --headless +Lazy! sync +qa 2>/dev/null || true
+        # Ejecutar la instalación de forma que el usuario vea qué pasa si falla
+        nvim --headless "+Lazy! sync" +qa
+        echo "Plugins updated."
+    else
+        echo "Error: neovim not found, skipping plugin installation."
     fi
 }
 
