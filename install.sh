@@ -45,8 +45,9 @@ install_packages_fedora() {
     echo "Removing sway if present (to replace with swayfx)..."
     sudo dnf remove -y sway 2>/dev/null || true
 
-    sudo dnf install -y --skip-broken --allowerasing \
+    sudo dnf install -y --skip-broken --allowerasing --skip-unavailable \
         zsh \
+        git \
         neovim \
         btop \
         rofi \
@@ -81,6 +82,9 @@ setup_copr_fedora() {
     echo "Setting up COPR repos..."
     if ! sudo dnf copr list | grep -q "mochaa/swayfx"; then
         sudo dnf copr enable -y mochaa/swayfx
+    fi
+    if ! sudo dnf copr list | grep -q "solopasha/hyprland"; then
+        sudo dnf copr enable -y solopasha/hyprland
     fi
 }
 
