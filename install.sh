@@ -306,7 +306,7 @@ install_oh_my_zsh() {
     cp "$SCRIPT_DIR/zsh/.zshrc" "$HOME/.zshrc"
     
     echo "Setting zsh as default shell..."
-    chsh -s /usr/bin/zsh 2>/dev/null || echo "Could not change default shell. Run 'chsh -s /usr/bin/zsh' manually."
+    timeout 5 chsh -s /usr/bin/zsh 2>/dev/null || echo "Could not change shell. Run 'chsh -s /usr/bin/zsh' manually."
 }
 
 install_nvim_plugins() {
