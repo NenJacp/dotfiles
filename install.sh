@@ -362,6 +362,19 @@ setup_lazyvim() {
     fi
 }
 
+setup_dotnet_tools() {
+    echo "Setting up .NET tools..."
+    if command -v dotnet &> /dev/null; then
+        mkdir -p "$HOME/.dotnet/tools"
+        # Limpiar cache de nuget por si acaso (causa errores de DotnetToolSettings.xml)
+        dotnet nuget locals all --clear || true
+        # Intentar instalar csharp-ls globalmente si no está
+        if ! dotnet tool list -g | grep -q "csharp-ls"; then
+            dotnet tool install -g csharp-ls || echo "Warning: Could not install csharp-ls via dotnet tool"
+        fi
+    fi
+}
+
 main() {
     echo ""
     echo "Select option:"
@@ -379,6 +392,7 @@ main() {
             ;;
         2)
             setup_lazyvim
+            setup_dotnet_tools
             copy_configs
             install_oh_my_zsh
             install_nvim_plugins
@@ -386,6 +400,7 @@ main() {
         3)
             install_packages
             setup_lazyvim
+            setup_dotnet_tools
             copy_configs
             install_oh_my_zsh
             install_nvim_plugins

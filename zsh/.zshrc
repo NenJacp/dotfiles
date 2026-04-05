@@ -18,7 +18,7 @@ export TERM=xterm-kitty
 # ==================================================
 # 2. PATH (AQUÍ está la clave para opencode)
 # ==================================================
-export PATH="$HOME/.local/bin:$HOME/bin:$HOME/.spicetify:$HOME/.npm-global/bin:$HOME/.opencode/bin:/usr/local/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/bin:$HOME/.dotnet/tools:$HOME/.spicetify:$HOME/.npm-global/bin:$HOME/.opencode/bin:/usr/local/bin:$PATH"
 
 # ==================================================
 # 3. Oh My Zsh
