@@ -1,0 +1,26 @@
+--tint-color=#161616
+--inside-color=#060606
+--inside-clear-color=#060606
+--inside-ver-color=#060606
+--inside-wrong-color=#060606
+--ring-color=#060606
+--ring-clear-color=#060606
+--ring-ver-color=#060606
+--ring-wrong-color=#060606
+--line-color=#060606
+--line-clear-color=#060606
+--line-ver-color=#060606
+--line-wrong-color=#060606
+--text-color=#f4f4f4
+--text-clear-color=#f4f4f4
+--text-ver-color=#f4f4f4
+--text-wrong-color=#f4f4f4
+--key-hl-color=#f4f4f4
+--cursor-color=#f4f4f4
+--font=JetBrains Mono
+
+--ignore-empty-password
+--show-failed-attempts
+--clock
+--indicator
+--screen-lock-behavior=default

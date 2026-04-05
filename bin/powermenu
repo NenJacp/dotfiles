@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+# options
+shutdown='Apagar'
+reboot='Reiniciar'
+logout='Cerrar Sesion'
+close='Cerrar Memu'
+
+# consts
+uptime="`uptime -p | sed -e 's/up //g'`"
+
+# rofi cmd
+rofi_cmd() {
+	rofi -dmenu -theme ~/.config/rofi/themes/oxocarbon-minimal-power.rasi
+}
+
+# pass variables to rofi dmenu
+run_rofi() {
+	echo -e "$logout\n$reboot\n$shutdown\n$close" | rofi_cmd
+}
+
+option_poweroff() {
+  # ~/.local/bin/disconnect
+  if command -v systemctl &>/dev/null; then
+    systemctl poweroff
+  elif command -v loginctl &>/dev/null; then
+    loginctl poweroff
+  elif command -v shutdown &>/dev/null; then
+    shutdown now
+  else
+    poweroff
+  fi
+}
+
+option_reboot() {
+  # ~/.local/bin/disconnect
+  if command -v systemctl &>/dev/null; then
+	systemctl reboot
+  elif command -v loginctl &>/dev/null; then
+    loginctl reboot
+  elif command -v shutdown &>/dev/null; then
+    shutdown -r now
+  else
+    reboot
+  fi
+}
+
+option_logout() {
+  # ~/.local/bin/disconnect
+  pkill -KILL -u "$(whoami)"
+}
+
+# run
+chosen="$(run_rofi)"
+case "$chosen" in
+    "$shutdown") option_poweroff ;;
+    "$reboot") option_reboot ;;
+    "$logout") option_logout  ;;
+esac
+sac

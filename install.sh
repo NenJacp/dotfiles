@@ -1,0 +1,289 @@
+#!/bin/bash
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo "========================================="
+echo "  Dotfiles Installation Script"
+echo "========================================="
+
+detect_os() {
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        case "$ID" in
+            fedora|rhel|centos)
+                echo "fedora"
+                ;;
+            arch|manjaro|endeavouros)
+                echo "arch"
+                ;;
+            debian|ubuntu|linuxmint)
+                echo "debian"
+                ;;
+            *)
+                echo "unknown"
+                ;;
+        esac
+    else
+        echo "unknown"
+    fi
+}
+
+OS=$(detect_os)
+echo "Detected OS: $OS"
+
+install_packages_fedora() {
+    echo "Installing packages for Fedora..."
+
+    sudo dnf install -y \
+        zsh \
+        git \
+        curl \
+        wget \
+        nodejs \
+        npm \
+        docker \
+        docker-compose \
+        btop \
+        mako \
+        waybar \
+        sway \
+        swaylock \
+        swayidle \
+        rofi \
+        kitty \
+        neovim \
+        lazydocker \
+        lazygit \
+        fonts-fontconfig \
+        wl-clipboard \
+        grim \
+        slurp \
+        pamixer \
+        brightnessctl \
+        gammastep \
+        mpd \
+        playerctl \
+        NetworkManager \
+        NetworkManager-tui \
+        polkit-gnome \
+        dunst \
+        libnotify \
+        pulseaudio \
+        pipewire \
+        pipewire-pulseaudio
+}
+
+install_packages_arch() {
+    echo "Installing packages for Arch Linux..."
+
+    sudo pacman -S --noconfirm \
+        zsh \
+        git \
+        curl \
+        wget \
+        nodejs \
+        npm \
+        docker \
+        btop \
+        mako \
+        waybar \
+        sway \
+        swaylock \
+        swayidle \
+        rofi \
+        kitty \
+        neovim \
+        lazydocker \
+        lazygit \
+        fontconfig \
+        wl-clipboard \
+        grim \
+        slurp \
+        pamixer \
+        brightnessctl \
+        gammastep \
+        mpd \
+        playerctl \
+        networkmanager \
+        polkit-gnome \
+        dunst \
+        libnotify \
+        pulseaudio \
+        pipewire \
+        pipewire-pulse
+}
+
+install_packages_debian() {
+    echo "Installing packages for Debian/Ubuntu..."
+
+    sudo apt update && sudo apt install -y \
+        zsh \
+        git \
+        curl \
+        wget \
+        nodejs \
+        npm \
+        docker.io \
+        docker-compose \
+        btop \
+        mako \
+        waybar \
+        sway \
+        swaylock \
+        rofi \
+        kitty \
+        neovim \
+        lazygit \
+        fontconfig \
+        wl-clipboard \
+        grim \
+        slurp \
+        pamixer \
+        brightnessctl \
+        gammastep \
+        mpd \
+        playerctl \
+        network-manager \
+        policykit-1-gnome \
+        dunst \
+        libnotify-bin \
+        pulseaudio \
+        pipewire \
+        pipewire-pulseaudio
+}
+
+setup_docker() {
+    echo "Setting up Docker..."
+    sudo systemctl enable --now docker 2>/dev/null || true
+    sudo usermod -aG docker $USER 2>/dev/null || true
+}
+
+setup_node_lts() {
+    echo "Setting up Node.js LTS..."
+    if ! command -v node &> /dev/null || [[ "$(node -v)" != "v20"* && "$(node -v)" != "v22"* ]]; then
+        curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+        sudo apt install -y nodejs 2>/dev/null || true
+    fi
+}
+
+install_packages() {
+    case "$OS" in
+        fedora)
+            install_packages_fedora
+            ;;
+        arch)
+            install_packages_arch
+            ;;
+        debian)
+            install_packages_debian
+            setup_node_lts
+            ;;
+        *)
+            echo "Unsupported OS: $OS"
+            exit 1
+            ;;
+    esac
+
+    setup_docker
+}
+
+link_configs() {
+    echo "Linking config files..."
+
+    mkdir -p "$HOME/.config"
+    mkdir -p "$HOME/.local/bin"
+
+    configs=(
+        "btop"
+        "mako"
+        "fontconfig"
+        "kitty"
+        "lazydocker"
+        "lazygit"
+        "nvim"
+        "nvim.bak"
+        "rofi"
+        "sway"
+        "swaync"
+        "swaylock"
+        "waybar"
+    )
+
+    for config in "${configs[@]}"; do
+        if [ -d "$SCRIPT_DIR/configs/$config" ]; then
+            echo "  Linking $config..."
+            rm -rf "$HOME/.config/$config"
+            ln -sf "$SCRIPT_DIR/configs/$config" "$HOME/.config/$config"
+        fi
+    done
+
+    echo "Linking bin scripts..."
+    for script in "$SCRIPT_DIR/bin"/*; do
+        if [ -f "$script" ]; then
+            name=$(basename "$script")
+            rm -f "$HOME/.local/bin/$name"
+            ln -sf "$script" "$HOME/.local/bin/$name"
+            chmod +x "$HOME/.local/bin/$name"
+        fi
+    done
+
+    echo "Linking .zshrc..."
+    if [ -f "$SCRIPT_DIR/zsh/.zshrc" ]; then
+        rm -f "$HOME/.zshrc"
+        ln -sf "$SCRIPT_DIR/zsh/.zshrc" "$HOME/.zshrc"
+    fi
+}
+
+install_oh_my_zsh() {
+    echo "Installing Oh My Zsh..."
+    if [ ! -d "$HOME/.oh-my-zsh" ]; then
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    fi
+
+    sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="af-magic"/' "$HOME/.zshrc"
+}
+
+install_nvim_plugins() {
+    echo "Installing Neovim plugins..."
+    if command -v nvim &> /dev/null; then
+        nvim --headless +Lazy! sync +qa 2>/dev/null || true
+    fi
+}
+
+main() {
+    echo ""
+    echo "Select option:"
+    echo "  1) Install packages only"
+    echo "  2) Link configs only"
+    echo "  3) Full installation (packages + configs)"
+    echo "  4) Exit"
+    echo ""
+    read -p "Enter choice [1-4]: " choice
+
+    case "$choice" in
+        1)
+            install_packages
+            ;;
+        2)
+            link_configs
+            install_oh_my_zsh
+            install_nvim_plugins
+            ;;
+        3)
+            install_packages
+            link_configs
+            install_oh_my_zsh
+            install_nvim_plugins
+            echo ""
+            echo "Installation complete! Restart your terminal to apply changes."
+            ;;
+        *)
+            echo "Exiting..."
+            exit 0
+            ;;
+    esac
+}
+
+main "$@"

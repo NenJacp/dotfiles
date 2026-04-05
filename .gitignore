@@ -1,0 +1,18 @@
+# Nix
+result/
+result-*/
+
+# Node
+node_modules/
+
+# Neovim
+nvim/.cache/
+nvim.bak/.cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+*.tmp
+*.swp

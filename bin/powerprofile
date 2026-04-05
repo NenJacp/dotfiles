@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Opciones
+balanced="Balanceado (Uso diario)"
+performance="Rendimiento (Gaming)"
+powersave="Ahorro de bateria (Ultra ahorro)"
+close="Cerrar menú"
+
+# rofi cmd
+rofi_cmd() {
+  rofi -dmenu -p "Power Profile" -theme ~/.config/rofi/themes/oxocarbon-minimal-powerprofile.rasi
+}
+
+# Mostrar menú
+chosen=$(echo -e "$balanced\n$performance\n$powersave\n$close" | rofi_cmd)
+
+# Acciones
+case "$chosen" in
+  "$balanced")
+    powerprofilesctl set balanced
+    ;;
+  "$performance")
+    powerprofilesctl set performance
+    ;;
+  "$powersave")
+    powerprofilesctl set power-saver
+    ;;
+  "$close")
+    exit 0
+    ;;
+esac
+

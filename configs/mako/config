@@ -1,0 +1,35 @@
+# ~/.config/mako/config
+
+sort=-time
+layer=overlay
+width=300
+height=120
+border-size=2
+border-radius=0
+padding=20,20
+icons=1
+max-icon-size=64
+default-timeout=5000
+ignore-timeout=1
+font=JetBrains Mono Nerd Font bold 10
+
+# Colores base (oxocarbon dark)
+background-color=#232323
+text-color=#f2f4f8
+border-color=#232323
+
+# Notificaciones críticas
+[urgency=critical]
+background-color=#232323
+text-color=#ffffff
+border-color=#232323
+
+# Ejemplo para tu app "lol"
+[app-name=lol]
+background-color=#232323
+text-color=#ffffff
+border-color=#525252
+history=0
+
+[mode=do-not-disturb]
+invisible=1

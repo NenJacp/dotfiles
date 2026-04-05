@@ -1,0 +1,92 @@
+configuration {
+  font: "JetBrains Mono Nerd Font bold 10";
+
+  drun {
+    display-name: "Apps";
+  }
+
+  dmenu {
+    display-name: "";
+  }
+  run {
+    display-name: "[°.°]";
+  }
+
+  window {
+    display-name: "[*.*]";
+  }
+
+  timeout {
+    delay: 10;
+    action: "kb-cancel";
+  }
+}
+
+* {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  spacing: 0;
+
+  bg: #151515;
+  bg-alt: #232323;
+  tc: #ffffff;
+  fg: #ee5396;
+  bc: #08bdba;
+  gc: #42be65;
+  fg-alt: #424242;
+
+  background-color: @bg;
+  text-color: @tc;
+}
+
+window {
+  location: center;
+  width: 15%;
+  height:20%;
+  transparency: "real";
+  // border-radius:  6px;
+}
+
+mainbox {
+  children: [inputbar, listview];
+}
+
+inputbar {
+  background-color: @bg-alt;
+  children: [prompt, entry];
+}
+
+entry {
+  text-color: @tc;
+  background-color: inherit;
+  padding: 7px 0;
+}
+
+prompt {
+  background-color: inherit;
+  padding: 7px;
+
+}
+
+listview {
+  lines: 8;
+}
+
+element {
+  children: [element-text];
+}
+//
+// element-icon {
+//   padding: 10px 10px;
+// }
+
+element-text {
+  padding: 12px;
+  text-color: @fg-alt;
+}
+
+element-text selected {
+  text-color: @tc;
+  // background-color: @c;
+}

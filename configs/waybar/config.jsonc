@@ -1,0 +1,190 @@
+// -*- mode: jsonc -*-
+{
+  "layer": "top", // Waybar at top layer
+  "position": "top", // Waybar position (top|bottom|left|right)
+  //    "margin-top": 5,
+  //    "margin-bottom": 5,
+  "height": 26, // Waybar height (to be removed for auto height)
+  "width": 1920, // Waybar width
+  "spacing": 3, // Gaps between modules (4px)
+  "reload_style_on_change": true,
+  // Choose the order of the modules
+  "modules-left": [
+    "custom/distro",
+    "sway/workspaces",
+    "sway/scratchpad",
+    "sway/mode",
+    "custom/media-info"
+  ],
+  "modules-center": [
+    "sway/window"
+  ],
+  "modules-right": [
+    "cpu",
+    "memory",
+    "disk",
+    "temperature",
+    "pulseaudio",
+    "backlight",
+    "custom/keyboard",
+    "custom/battery",
+    "custom/notification",
+    "tray",
+    "clock"
+  ],
+  // Modules configuration
+  "custom/distro": {
+    "format": " FEDORA  ~",
+    "tooltip": true,
+    "tooltip-format": "Nen | Damaya"
+  },
+  "sway/workspaces": {
+    "disable-scroll": false,
+    "all-outputs": true,
+    "format": "{icon} ",
+    "format-icons": {
+      //         "urgent": "󰋑",
+      //         "focused": "󰋑",
+      //         "default": "󰋔"
+    }
+  },
+  "sway/mode": {
+    "format": "<span style=\"normal\">{}</span>"
+  },
+  "sway/scratchpad": {
+    "format": "{icon} {count}",
+    "show-empty": false,
+    "format-icons": [
+      "",
+      "󰋑"
+    ],
+    "tooltip": true,
+    "tooltip-format": "{app}: {title}"
+  },
+  "sway/window": {
+    "format": "{title}",
+    "format-empty": "Escritorio",
+    "format-icons": {
+      "desktop": "desktop",
+      "default": "desktop"
+    },
+    "icon": false,
+    "icon-size": 14,
+    "max-length": 50,
+    "all-outputs": true
+  },
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 14,
+    "tooltip-format": "{title}",
+    "on-click": "activate",
+    "on-click-middle": "close",
+    "all-outputs": false
+  },
+  "mpd": {
+    "format": "{artist} - {title}",
+    "format-disconnected": "",
+    "format-stopped": "",
+    "title-len": 30,
+    "unknown-tag": "N/A",
+    "interval": 5,
+    "tooltip-format": "{artist} - {title}\nAlbum: {album}\nVolume: {volume}",
+    "tooltip-format-disconnected": ""
+  },
+  "tray": {
+    "icon-size": 12,
+    "spacing": 3
+  },
+  "clock": {
+    // "timezone": "America/New_York",
+    "tooltip-format": "<big>{:%A %d}</big>\n<tt><small>{calendar}</small></tt>",
+    "format": "{:%H:%M}", // 24-hour
+    // "format": "{:%I:%M%p}", // 12-hour
+    "format-alt": "{:%A, %B %d %Y}"
+  },
+  "backlight": {
+    "device": "acpi_video1",
+    "format": "{icon} {percent}%",
+    "format-icons": [
+      "󰃞",
+      "󰃟",
+      "󰃠"
+    ],
+    "tooltip-format": "Brightness: {percent}%\nClick to toggle Night Light",
+    "on-click": "~/.local/bin/night-light"
+  },
+  "custom/keyboard": {
+    "format": "{} ",
+    "exec": "~/.config/waybar/scripts/keyboard.sh",
+    "interval": 1
+  },
+  "custom/battery": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/battery.sh",
+    "interval": 2,
+    "on-click": "~/.local/bin/powermenu"
+  },
+  "network": {
+    "interval": 5,
+    "format-wifi": "{icon} {essid}",
+    "format-ethernet": "󰈀 {ipaddr}",
+    "format-disconnected": "󰖪 Desconectado",
+    "format-icons": [
+      "󰤯",
+      "󰤟",
+      "󰤢",
+      "󰤥",
+      "󰤨"
+    ],
+    "on-click": "~/.config/sway/modules/wifi/build/wifi-connector",
+    "on-click-right": "nm-connection-editor"
+  },
+  "cpu": {
+    "format": "󰍛 {usage}% ",
+    "tooltip": true,
+    "tooltip-format": "Uso de CPU: {usage}%\nNúcleos: {cores}"
+  },
+  "memory": {
+    "format": " {}% ",
+    "tooltip": true,
+    "tooltip-format": "RAM en uso: {used} / {total} ({percentage}%)"
+  },
+  "disk": {
+    "format": "󰋊 {percentage_used}%",
+    "tooltip": true,
+    "tooltip-format": "Espacio libre: {free} / {total} ({percentage_free}%)"
+  },
+  "pulseaudio": {
+    "scroll-step": 1, // %, can be a float
+    "format": "{icon} {volume}%",
+    "format-muted": "󰖁",
+    "format-source": "{volume}% 󰍬",
+    "format-source-muted": "󰍭",
+    "format-icons": {
+      "default": [
+        "󰕿",
+        "󰖀",
+        "󰕾"
+      ]
+    },
+    "tooltip-format": "Volume: {volume}%\n{desc}",
+    "on-click": "pamixer --toggle-mute",
+    "on-click-right": "pavucontrol"
+  },
+  "custom/media-info": {
+    "format": "󰎇 {}",
+    "return-type": "json",
+    "max-length": 50,
+    "exec-if": "playerctl status",
+    "on-click": "playerctl play-pause",
+    "tooltip-format": "Click para pausar/reproducir",
+    "exec": "playerctl metadata --format '{\"text\": \"{{artist}} - {{title}}\", \"tooltip\": \"{{playerName}} : {{title}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F"
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": " ",
+    "on-click": "makoctl dismiss",
+    "on-click-right": "makoctl restore"
+  }
+}

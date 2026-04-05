@@ -1,0 +1,24 @@
+configuration {
+    terminal: "alacritty";
+    modi: "drun,run,window";
+    display-drun: "Aplicaciones";
+    display-run: "Ejecutar";
+    display-window: "Ventanas";
+    show-icons: true;
+    drun-display-format: "{icon}  {name}";
+    font: "JetBrains Mono Nerd Font 12";
+    width: 50;
+    lines: 15;
+    columns: 1;
+    bw: 2;
+    location: 0;
+    yoffset: 0;
+    xoffset: 0;
+    fixed-height: true;
+    disable-history: false;
+    sorted: true;
+    case-sensitive: false;
+    cycle: true;
+}
+
+@theme "~/.config/rofi/themes/oxocarbon-minimal.rasi"

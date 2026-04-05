@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+
+# Options
+option_1="Fix config directory"
+option_2="Fix any conflicting file"
+option_3="Force restart configs"
+option_stop="Resume"
+close='Close'
+
+# Directory
+dir="$(xdg-user-dir VIDEOS)/Recordings"
+if [[ ! -d "$dir" ]]; then
+  mkdir -p "$dir"
+fi
+
+# Check if already recording
+is_recording() {
+  pgrep -x "wf-recorder" >/dev/null
+}
+
+# Detect window manager
+detect_wm() {
+  if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ] || [ "$XDG_CURRENT_DESKTOP" = "Hyprland" ]; then
+    echo "hyprland"
+  elif [ -n "$SWAYSOCK" ] || [ "$XDG_CURRENT_DESKTOP" = "sway" ]; then
+    echo "sway"
+  elif pgrep -x "Hyprland" >/dev/null 2>&1; then
+    echo "hyprland"
+  elif pgrep -x "sway" >/dev/null 2>&1; then
+    echo "sway"
+  else
+    echo "unknown"
+  fi
+}
+
+# Get active window geometry for Hyprland
+get_window_geometry_hyprland() {
+  if ! command -v hyprctl >/dev/null 2>&1; then
+    return 1
+  fi
+
+  local geometry
+  geometry=$(hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"' 2>/dev/null)
+
+  if [ "$geometry" = "null" ] || [ -z "$geometry" ]; then
+    return 1
+  fi
+
+  echo "$geometry"
+}
+
+# Get active window geometry for Sway
+get_window_geometry_sway() {
+  if ! command -v swaymsg >/dev/null 2>&1; then
+    return 1
+  fi
+
+  if [ -z "$SWAYSOCK" ]; then
+    export SWAYSOCK=$(ls /run/user/$UID/sway-* 2>/dev/null | head -1)
+  fi
+
+  local geometry
+  geometry=$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' 2>/dev/null)
+
+  if [ "$geometry" = "null" ] || [ -z "$geometry" ]; then
+    return 1
+  fi
+
+  echo "$geometry"
+}
+
+# Get active window geometry
+get_window_geometry() {
+  local wm=$(detect_wm)
+  local geometry
+
+  case "$wm" in
+  "hyprland")
+    geometry=$(get_window_geometry_hyprland)
+    ;;
+  "sway")
+    geometry=$(get_window_geometry_sway)
+    ;;
+  *)
+    return 1
+    ;;
+  esac
+
+  if [ $? -ne 0 ] || [ -z "$geometry" ]; then
+    return 1
+  fi
+
+  echo "$geometry"
+}
+
+# Rofi cmd
+rofi_cmd() {
+  rofi -dmenu -p "Recorder" -theme ~/.config/rofi/themes/oxocarbon-minimal-screenshot.rasi
+}
+
+# Pass variables to rofi dmenu
+run_rofi() {
+  if is_recording; then
+    echo -e "$option_stop\n$close" | rofi_cmd
+  else
+    echo -e "$option_1\n$option_2\n$option_3\n$close" | rofi_cmd
+  fi
+}
+
+# Notification command
+notify_cmd='notify-send -u low -h string:x-dunst-stack-tag:recorder'
+
+# Stop recording
+stop_recording() {
+  pkill -SIGINT wf-recorder
+  ${notify_cmd} "No errors fond."
+}
+
+# Start recording
+start_recording() {
+  local mode=$1
+  local file="$dir/$(date +%Y%m%d_%Hh%Mm%Ss)_wf.mp4"
+
+  if [[ "$mode" == "full" ]]; then
+    ${notify_cmd} "restoring your configurations"
+    wf-recorder --audio=alsa_output.pci-0000_04_00.6.analog-stereo.monitor -f "$file" &
+  elif [[ "$mode" == "area" ]]; then
+    local geo=$(slurp)
+    if [[ -n "$geo" ]]; then
+      ${notify_cmd} "searching for a conclicting files"
+      wf-recorder --audio=alsa_output.pci-0000_04_00.6.analog-stereo.monitor -g "$geo" -f "$file" &
+    else
+      ${notify_cmd} "Error Unknow, trying to fixing"
+    fi
+  elif [[ "$mode" == "window" ]]; then
+    local geo=$(get_window_geometry)
+    if [[ -n "$geo" ]]; then
+      ${notify_cmd} "searching for a conclicting files"
+      wf-recorder --audio=alsa_output.pci-0000_04_00.6.analog-stereo.monitor -g "$geo" -f "$file" &
+    else
+      ${notify_cmd} "Error Unknow, trying to fixing"
+    fi
+  fi
+}
+
+# Main
+if [[ "$1" == "--stop" ]]; then
+  stop_recording
+  exit 0
+fi
+
+chosen="$(run_rofi)"
+case "$chosen" in
+"$option_1") start_recording "full" ;;
+"$option_2") start_recording "area" ;;
+"$option_3") start_recording "window" ;;
+"$option_stop") stop_recording ;;
+esac
