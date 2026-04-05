@@ -67,7 +67,8 @@ install_packages_fedora() {
         swayidle \
         waybar \
         mako \
-        fontconfig
+        fontconfig \
+        fastfetch
 
     install_nerd_fonts
     install_lazygit_fedora
