@@ -28,7 +28,6 @@
     "backlight",
     "custom/keyboard",
     "custom/battery",
-    "custom/notification",
     "tray",
     "clock"
   ],
@@ -180,11 +179,5 @@
     "on-click": "playerctl play-pause",
     "tooltip-format": "Click para pausar/reproducir",
     "exec": "playerctl metadata --format '{\"text\": \"{{artist}} - {{title}}\", \"tooltip\": \"{{playerName}} : {{title}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F"
-  },
-  "custom/notification": {
-    "tooltip": false,
-    "format": " ",
-    "on-click": "makoctl dismiss",
-    "on-click-right": "makoctl restore"
   }
 }
