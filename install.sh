@@ -4,6 +4,16 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+if [ -n "$ZSH_VERSION" ]; then
+    SCRIPT_INTERPRETER="zsh"
+else
+    SCRIPT_INTERPRETER="bash"
+fi
+
+if [ "$SCRIPT_INTERPRETER" = "bash" ]; then
+    exec zsh "$0" "$@"
+fi
+
 echo "========================================="
 echo "  Dotfiles Installation Script"
 echo "========================================="
@@ -297,7 +307,12 @@ install_oh_my_zsh() {
     if [ ! -d "$HOME/.oh-my-zsh" ]; then
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     fi
-    sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="af-magic"/' "$HOME/.zshrc"
+    
+    echo "Copying .zshrc..."
+    cp "$SCRIPT_DIR/zsh/.zshrc" "$HOME/.zshrc"
+    
+    echo "Setting zsh as default shell..."
+    chsh -s /usr/bin/zsh 2>/dev/null || echo "Could not change default shell. Run 'chsh -s /usr/bin/zsh' manually."
 }
 
 install_nvim_plugins() {
