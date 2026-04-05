@@ -57,7 +57,7 @@ install_packages_fedora() {
         curl \
         ripgrep \
         fd-find \
-        dotnet-sdk-8.0 \
+        dotnet-sdk-9.0 \
         btop \
         rofi \
         kitty \
@@ -222,7 +222,7 @@ install_packages_debian() {
         build-essential \
         unzip \
         wget \
-        dotnet-sdk-8.0 \
+        dotnet-sdk-9.0 \
         ripgrep \
         fd-find \
         fontconfig \
