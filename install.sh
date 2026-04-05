@@ -66,16 +66,16 @@ install_packages_fedora() {
 
 install_lazydocker_fedora() {
     echo "Installing lazydocker..."
-    LAZYDOCKER_URL="https://github.com/jesseduffield/lazydocker/releases/latest/download/lazydocker_Linux_amd64.tar.gz"
-    curl -Lo /tmp/lazydocker.tar.gz "$LAZYDOCKER_URL"
+    LAZYDOCKER_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazydocker/releases/latest" | python3 -c "import sys,json; print(json.load(sys.stdin)['tag_name'].replace('v',''))")
+    curl -sL "https://github.com/jesseduffield/lazydocker/releases/download/v${LAZYDOCKER_VERSION}/lazydocker_${LAZYDOCKER_VERSION}_Linux_x86_64.tar.gz" -o /tmp/lazydocker.tar.gz
     sudo tar -xzf /tmp/lazydocker.tar.gz -C /usr/local/bin lazydocker
     rm /tmp/lazydocker.tar.gz
 }
 
 install_lazygit_fedora() {
     echo "Installing lazygit..."
-    LAZYGIT_URL="https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_Linux_amd64.tar.gz"
-    curl -Lo /tmp/lazygit.tar.gz "$LAZYGIT_URL"
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | python3 -c "import sys,json; print(json.load(sys.stdin)['tag_name'].replace('v',''))")
+    curl -sL "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" -o /tmp/lazygit.tar.gz
     sudo tar -xzf /tmp/lazygit.tar.gz -C /usr/local/bin lazygit
     rm /tmp/lazygit.tar.gz
 }
