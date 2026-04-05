@@ -40,6 +40,7 @@ install_packages_fedora() {
         zsh \
         neovim \
         btop \
+        btop \
         rofi \
         kitty \
         grim \
@@ -89,8 +90,10 @@ setup_node_fedora() {
 
 setup_docker_fedora() {
     echo "Setting up Docker..."
-    sudo dnf install -y dnf-plugins-core
-    sudo dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
+    if [ ! -f /etc/yum.repos.d/docker-ce.repo ]; then
+        sudo dnf install -y dnf-plugins-core
+        sudo dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
+    fi
     sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     sudo systemctl enable --now docker
     sudo usermod -aG docker $USER
@@ -222,6 +225,7 @@ link_configs() {
     mkdir -p "$HOME/.local/bin"
 
     configs=(
+        "btop"
         "mako"
         "fontconfig"
         "kitty"
