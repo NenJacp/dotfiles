@@ -60,8 +60,7 @@ install_packages_fedora() {
         swaylock \
         swayidle \
         waybar \
-        mako \
-        swaynotificationcenter
+        mako
 
     install_lazygit_fedora
     setup_node_fedora
@@ -70,7 +69,6 @@ install_packages_fedora() {
 setup_copr_fedora() {
     echo "Setting up COPR repos..."
     sudo dnf copr enable -y mochaa:swayfx
-    sudo dnf copr enable -y erikreider:SwayNotificationCenter
 }
 
 install_lazydocker_fedora() {
