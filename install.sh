@@ -36,10 +36,11 @@ echo "Detected OS: $OS"
 install_packages_fedora() {
     echo "Installing packages for Fedora..."
 
+    setup_copr_fedora
+
     sudo dnf install -y --skip-broken \
         zsh \
         neovim \
-        btop \
         btop \
         rofi \
         kitty \
@@ -54,14 +55,22 @@ install_packages_fedora() {
         NetworkManager-tui \
         dunst \
         libnotify \
-        sway \
+        swayfx \
+        swayfx-bg \
         swaylock \
         swayidle \
         waybar \
-        mako
+        mako \
+        swaynotificationcenter
 
     install_lazygit_fedora
     setup_node_fedora
+}
+
+setup_copr_fedora() {
+    echo "Setting up COPR repos..."
+    sudo dnf copr enable -y mochaa:swayfx
+    sudo dnf copr enable -y erikreider:SwayNotificationCenter
 }
 
 install_lazydocker_fedora() {
@@ -241,7 +250,11 @@ link_configs() {
 
     for config in "${configs[@]}"; do
         if [ -d "$SCRIPT_DIR/configs/$config" ]; then
-            echo "  Copying $config..."
+            if [ "$config" = "sway" ]; then
+                echo "  Copying sway (swayfx)..."
+            else
+                echo "  Copying $config..."
+            fi
             rm -rf "$HOME/.config/$config"
             cp -r "$SCRIPT_DIR/configs/$config" "$HOME/.config/$config"
         fi
