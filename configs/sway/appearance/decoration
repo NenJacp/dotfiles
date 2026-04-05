@@ -1,0 +1,77 @@
+# Decoration
+
+# SwayFX settings
+# corner_radius 0
+# blur disable
+# titlebar_separator disable
+# shadows enable
+# shadows_on_csd enable
+# shadow_blur_radius 50
+# shadow_color #0000007F
+# shadow_inactive_color #00000000
+
+# Activar efectos para mejor compatibilidad con animaciones
+shadows enable
+
+# Font
+font monospace 11
+# adjust this to change titlebar size
+font pango: monospace 7
+
+# Gaps
+smart_gaps on # on|off|toggle|inverse_outer
+gaps outer 2
+gaps inner 2
+
+# Titlebar and border configuration
+# SwayFX BUG: https://github.com/WillPower3309/swayfx/issues/201
+# Looks off if > 0
+titlebar_border_thickness 0
+
+# Border
+set $border_width 2
+default_border pixel $border_width
+default_floating_border none
+# default_border normal $border_width
+# default_floating_border normal $border_width
+smart_borders on
+
+# Window Titlebar
+titlebar_padding 10 4
+title_align left
+# w/ title
+# for_window [class=".*"] title_format "<span rise='2000' font='sans 10'>%title</span>"
+
+# w/o title
+for_window [class=".*"] title_format "<span></span>"
+
+# Disable titlebar for certain windows
+for_window {
+    [app_id="^vpn$"] border pixel $border_width
+    [app_id="^editor$"] border pixel $border_width
+    [app_id="^org$"] border pixel $border_width
+    [app_id="firefox"] border pixel $border_width
+    [app_id="LibreWolf"] border pixel $border_width
+    [class="Chromium"] border pixel $border_width
+    [app_id="Chromium"] border pixel $border_width
+    [app_id="chromium"] border pixel $border_width
+    [class="Brave-browser"] border pixel $border_width
+    [app_id="thunderbird"] border pixel $border_width
+    [app_id="lollypop"] border pixel $border_width
+    [class="Spotify"] border pixel $border_width
+    [app_id="org.qutebrowser.qutebrowser"] border pixel $border_width
+    [title=".* is sharing your screen."] border pixel $border_width
+    [app_id="firefox" title="Firefox — Sharing Indicator"] border pixel $border_width
+    [app_id="gimp-2.99" title="GIMP Startup"] border pixel $border_width 
+    [title="GNU Image Manipulation Program"] border pixel $border_width
+    [app_id="com.github.maoschanz.drawing"] border pixel $border_width
+    [class="^battle.net.exe$"] border pixel $border_width
+    [class="^steam$"] border pixel $border_width
+    [class="^leagueclient.exe$"] border pixel $border_width
+    [class="^leagueclientux.exe$"] border pixel $border_width
+    [app_id="^chrome$"] border pixel $border_width
+    [app_id="imv"] border pixel $border_width
+    [app_id="(?i)cursor"] border none
+}
+
+# vim:set ft=conf:

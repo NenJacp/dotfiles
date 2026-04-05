@@ -1,0 +1,8 @@
+# Mod key
+set $mod Mod4
+# Incluir configuraciones
+include ~/.config/sway/keys/*
+include ~/.config/sway/system/*
+include ~/.config/sway/appearance/*
+include ~/.config/sway/hardware/*
+include ~/.config/sway/animations/animation_settings

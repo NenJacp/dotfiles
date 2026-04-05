@@ -1,0 +1,37 @@
+# Recargar Sway
+bindsym $mod+c reload
+
+bindsym $mod+Backspace exec ~/.local/bin/powermenu
+
+bindsym $mod+z exec ~/.local/bin/powerprofile
+
+bindsym $mod+x exec rofi -show window -theme ~/.config/rofi/themes/oxocarbon-minimal-power.rasi
+
+# Volumen
+bindsym --locked {
+    XF86AudioMute exec ~/.local/bin/volume --toggle
+    XF86AudioLowerVolume exec ~/.local/bin/volume --down
+    XF86AudioRaiseVolume exec ~/.local/bin/volume --up
+    XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+
+    $mod+F1 exec ~/.local/bin/volume --toggle
+    $mod+F2 exec ~/.local/bin/volume --down
+    $mod+F3 exec ~/.local/bin/volume --up
+}
+
+# Brillo
+bindsym --locked {
+    XF86MonBrightnessDown exec ~/.local/bin/brightness --down
+    XF86MonBrightnessUp exec ~/.local/bin/brightness --up
+
+    $mod+F5 exec ~/.local/bin/brightness --down
+    $mod+F6 exec ~/.local/bin/brightness --up
+}
+
+# Lock screen
+bindsym $mod+Control+Shift+l exec hyprlock -c ~/.config/sway/hyprlock/hyprlock.conf -c ~/.config/sway/hyprlock/hyprlock.conf
+
+# Notifications (Mako)
+bindsym $mod+Shift+n exec makoctl dismiss
+bindsym $mod+Shift+period exec makoctl restore
+bindsym $mod+Shift+comma exec makoctl dismiss -a

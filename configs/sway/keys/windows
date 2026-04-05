@@ -1,0 +1,72 @@
+# Cambiar foco con Vim keys
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+
+bindsym $mod+b splith
+bindsym $mod+v splitv
+
+# Modos de ventana
+bindsym $mod+w layout tabbed 
+bindsym $mod+e layout toggle split
+
+# Cambiar foco con flechas
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Mover la ventana en direcciones
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# Pantalla completa (toggle)
+bindsym $mod+f fullscreen
+
+# O con flechas
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Entrar a modo resize
+bindsym $mod+r mode "resize"
+
+mode "resize" {
+    # Redimensionar con Vim keys
+    bindsym h resize shrink width 10px
+    bindsym j resize grow height 10px
+    bindsym k resize shrink height 10px
+    bindsym l resize grow width 10px
+
+    # Redimensionar con flechas
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    # Salir de resize mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# Alternar flotante
+bindsym $mod+Shift+space exec swaymsg 'floating toggle, resize set width 1100 px height 700 px, move position center'
+
+
+# Cambiar a la siguiente ventana
+bindsym mod1+Tab focus next
+
+# Cambiar a la ventana anterior
+bindsym mod1+Shift+Tab focus prev
+
+
+# Poner foco entre tiling y floating
+bindsym $mod+space focus mode_toggle
+
+# Cerrar ventana activa con SUPER+Q
+bindsym $mod+q kill

@@ -1,0 +1,28 @@
+
+# Variables para portales (MUY IMPORTANTE)
+exec_always dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec_always systemctl --user restart xdg-desktop-portal
+
+# Ambxst Shell (QuickShell)
+# exec_always qs -p ~/.config/Ambxst/Ambxst/shell.qml
+
+# Barra
+ exec_always waybar
+
+# Applets
+exec_always nm-applet --indicator
+exec_always blueman-applet
+
+# Notificaciones
+# exec_always dunst
+exec_always mako -c ~/.config/sway/mako/config
+# exec swaync
+
+# Script de notificaciones de Spotify (automático)
+# exec_always ~/.config/sway/scripts/spotify-notify.sh
+
+# Fondo
+#exec mpvpaper -o "no-audio loop" '*' ~/.config/sway/wallpaper/snow.mp4
+exec swww-daemon
+exec_always swww img ~/.config/sway/wallpaper/dm.jpg --transition-type none
+#exec_always swaybg -i ~/.config/sway/wallpaper/d.jpeg -m fill

@@ -1,0 +1,39 @@
+# Animation Settings for SwayFX
+# Configuración de animaciones moderadas para SwayFX
+
+# Duración de animaciones (milisegundos)
+# Valores recomendados: 200-400 para animaciones moderadas
+
+# Habilitar sombras globales
+shadows enable
+
+# Configuración para animaciones de workspace
+# Nota: Esta característica está en roadmap de SwayFX
+# workspace_animation_duration 400
+
+# Efectos de capa para panels y notificaciones
+# Waybar - barra de estado
+layer_effects "waybar" {
+    shadows enable;
+}
+
+# SwayNC - centro de notificaciones (si lo usas)
+layer_effects "swaync" {
+    shadows enable;
+}
+
+# Rofi (ventanas flotantes)
+layer_effects "rofi" {
+    shadows enable;
+}
+
+# Animaciones para ventanas específicas
+# Ventanas emergentes y diálogos
+for_window [window_type="dialog"] {
+}
+
+# Ventanas flotantes
+for_window [floating] {
+}
+
+# vim:set ft=conf:

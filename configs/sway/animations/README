@@ -1,0 +1,45 @@
+# Animaciones SwayFX
+
+Esta carpeta contiene las configuraciones de animación para SwayFX.
+
+## Archivos
+
+- `animation_settings` - Configuración principal de animaciones
+- `README` - Esta documentación
+
+## Animaciones Disponibles
+
+### Fade Animations
+- `fade_in enable/disable` - Animación al abrir ventanas
+- `fade_out enable/disable` - Animación al cerrar ventanas
+- `animation_duration <ms>` - Duración de las animaciones
+
+### Layer Effects
+- Aplican animaciones a paneles y notificaciones
+- Configuradas para: waybar, swaync, rofi
+
+## Configuración Actual
+
+- **Duración**: 300ms (moderada)
+- **Fade**: Activado para entrada/salida
+- **Layer Effects**: Activados para panels principales
+
+## Integración
+
+Las animaciones se incluyen automáticamente desde el archivo principal de configuración:
+```
+include ~/.config/sway/animations/*
+```
+
+## Personalización
+
+Para ajustar la intensidad:
+- **Muy sutiles**: `animation_duration 200`
+- **Moderadas**: `animation_duration 300` (actual)
+- **Pronunciadas**: `animation_duration 400`
+
+## Notas
+
+- Algunas características de animación están en desarrollo
+- Las animaciones funcionan mejor con blur y shadows activados
+- Requiere SwayFX versión 0.2+

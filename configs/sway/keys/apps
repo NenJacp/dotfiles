@@ -1,0 +1,15 @@
+# Lanzar Rofi
+bindsym $mod+d exec rofi -show drun
+# screenshot
+bindsym Print exec ~/.local/bin/screenshot
+bindsym $mod+Delete exec ~/.local/bin/screenshot
+bindsym $mod+t exec ~/.local/bin/recorder
+
+# WiFi Manager
+bindsym $mod+a exec ~/.local/bin/wifi
+# Bluetooth Manager  
+bindsym $mod+s exec ~/.local/bin/bluetooth
+
+#Lanzar terminal
+bindsym $mod+Return exec kitty --config ~/.config/sway/kitty/kitty.conf --config ~/.config/sway/kitty/kitty.conf
+
