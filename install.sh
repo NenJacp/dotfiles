@@ -49,6 +49,15 @@ install_packages_fedora() {
         zsh \
         git \
         neovim \
+        gcc \
+        gcc-c++ \
+        make \
+        unzip \
+        wget \
+        curl \
+        ripgrep \
+        fd-find \
+        dotnet-sdk-8.0 \
         btop \
         rofi \
         kitty \
@@ -165,6 +174,12 @@ install_packages_arch() {
         neovim \
         lazydocker \
         lazygit \
+        base-devel \
+        unzip \
+        wget \
+        dotnet-sdk \
+        ripgrep \
+        fd \
         fontconfig \
         wl-clipboard \
         grim \
@@ -204,6 +219,12 @@ install_packages_debian() {
         kitty \
         neovim \
         lazygit \
+        build-essential \
+        unzip \
+        wget \
+        dotnet-sdk-8.0 \
+        ripgrep \
+        fd-find \
         fontconfig \
         wl-clipboard \
         grim \
