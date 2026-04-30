@@ -24,10 +24,14 @@ detect_wm() {
     echo "hyprland"
   elif [ -n "$SWAYSOCK" ] || [ "$XDG_CURRENT_DESKTOP" = "sway" ]; then
     echo "sway"
+  elif [ -n "$NIRI_SOCKET" ] || [ "$XDG_CURRENT_DESKTOP" = "niri" ]; then
+    echo "niri"
   elif pgrep -x "Hyprland" >/dev/null 2>&1; then
     echo "hyprland"
   elif pgrep -x "sway" >/dev/null 2>&1; then
     echo "sway"
+  elif pgrep -x "niri" >/dev/null 2>&1; then
+    echo "niri"
   else
     echo "unknown"
   fi
@@ -69,6 +73,13 @@ get_window_geometry_sway() {
   echo "$geometry"
 }
 
+# Get active window geometry for Niri
+get_window_geometry_niri() {
+  # niri doesn't expose window screen coordinates directly
+  # Fall back to area selection with slurp
+  return 1
+}
+
 # Get active window geometry
 get_window_geometry() {
   local wm=$(detect_wm)
@@ -80,6 +91,9 @@ get_window_geometry() {
     ;;
   "sway")
     geometry=$(get_window_geometry_sway)
+    ;;
+  "niri")
+    geometry=$(get_window_geometry_niri)
     ;;
   *)
     return 1
@@ -133,7 +147,16 @@ start_recording() {
       ${notify_cmd} "Error Unknow, trying to fixing"
     fi
   elif [[ "$mode" == "window" ]]; then
-    local geo=$(get_window_geometry)
+    local geo=""
+    local wm=$(detect_wm)
+    
+    if [[ "$wm" == "niri" ]]; then
+      # niri doesn't expose window coordinates, use slurp for area selection
+      geo=$(slurp)
+    else
+      geo=$(get_window_geometry)
+    fi
+    
     if [[ -n "$geo" ]]; then
       ${notify_cmd} "searching for a conclicting files"
       wf-recorder --audio=alsa_output.pci-0000_04_00.6.analog-stereo.monitor -g "$geo" -f "$file" &

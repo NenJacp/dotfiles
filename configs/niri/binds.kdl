@@ -19,7 +19,9 @@ binds {
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "kitty"; }
-    Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+    Mod+D hotkey-overlay-title="Run an Application: rofi" { spawn "rofi" "-show" "drun"; }
+    Mod+X hotkey-overlay-title="Switch Window: rofi" { spawn "rofi" "-show" "window" "-theme" "~/.config/rofi/themes/oxocarbon-minimal-power.rasi"; }
+    Mod+T hotkey-overlay-title="Screen Recorder" { spawn "~/.local/bin/recorder"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
