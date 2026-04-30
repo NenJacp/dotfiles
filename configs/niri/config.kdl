@@ -1,0 +1,12 @@
+// This config is in the KDL format: https://kdl.dev
+// Check the wiki for a full description of the configuration:
+// https://yalter.github.io/niri/Configuration:-Introduction
+
+// Include other config files
+include "inputs.kdl"
+include "outputs.kdl"
+include "layout.kdl"
+include "window-rules.kdl"
+include "binds.kdl"
+include "startup.kdl"
+include "misc.kdl"

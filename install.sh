@@ -80,6 +80,7 @@ install_packages_fedora() {
         waybar \
         mako \
         swww \
+        niri \
         fontconfig \
         fastfetch \
         google-noto-sans-fonts
@@ -100,10 +101,26 @@ setup_copr_fedora() {
 }
 
 install_nerd_fonts() {
+    # Install Noto Sans fonts (system-wide)
     echo "Installing Noto Sans fonts..."
     sudo dnf install -y google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-sans-cjk-kr-fonts 2>/dev/null || true
+
+    # Install JetBrains Mono Nerd Font (user-local)
+    echo "Installing JetBrains Mono Nerd Font..."
+    FONT_DIR="$HOME/.local/share/fonts"
+    mkdir -p "$FONT_DIR"
+
+    if [ ! -f "$FONT_DIR/JetBrainsMonoNerdFont-Regular.ttf" ]; then
+        echo "Downloading JetBrains Mono Nerd Font from GitHub..."
+        curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip" -o /tmp/JetBrainsMono.zip
+        unzip -oq /tmp/JetBrainsMono.zip -d "$FONT_DIR/" -x "*Windows*" "*.txt" "*.md" "*.html"
+        rm -f /tmp/JetBrainsMono.zip
+    fi
+
+    # Refresh font caches (system and user)
     echo "Refreshing font cache..."
-    sudo fc-cache -f
+    sudo fc-cache -f 2>/dev/null || true
+    fc-cache -f 2>/dev/null || true
 }
 
 install_lazydocker_fedora() {
@@ -287,6 +304,7 @@ copy_configs() {
         "lazygit"
         "nvim"
         "nvim.bak"
+        "niri"
         "rofi"
         "sway"
         "swaync"

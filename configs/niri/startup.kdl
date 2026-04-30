@@ -1,0 +1,2 @@
+// Spawn programs at startup
+spawn-at-startup "waybar"
