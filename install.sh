@@ -82,8 +82,7 @@ install_packages_fedora() {
         swww \
         niri \
         fontconfig \
-        fastfetch \
-        google-noto-sans-fonts
+        fastfetch
 
     install_nerd_fonts
     install_lazygit_fedora
@@ -101,10 +100,6 @@ setup_copr_fedora() {
 }
 
 install_nerd_fonts() {
-    # Install Noto Sans fonts (system-wide)
-    echo "Installing Noto Sans fonts..."
-    sudo dnf install -y google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-sans-cjk-kr-fonts 2>/dev/null || true
-
     # Install JetBrains Mono Nerd Font (user-local)
     echo "Installing JetBrains Mono Nerd Font..."
     FONT_DIR="$HOME/.local/share/fonts"
